@@ -473,7 +473,7 @@ if (empty($conf->stripe2connect->enabled)) {
 		if (getDolGlobalString('STRIPE2_TEST_WEBHOOK_KEY') && getDolGlobalString('STRIPE2_TEST_SECRET_KEY') && getDolGlobalString('STRIPE2_TEST_WEBHOOK_ID')) {
 			if (utf8_check($conf->global->STRIPE2_TEST_SECRET_KEY)) {
 				try {
-					\Stripe\Stripe2::setApiKey($conf->global->STRIPE2_TEST_SECRET_KEY);
+					\Stripe\Stripe::setApiKey($conf->global->STRIPE2_TEST_SECRET_KEY);
 					$endpoint = \Stripe\WebhookEndpoint::retrieve($conf->global->STRIPE2_TEST_WEBHOOK_ID);
 					$endpoint->enabled_events = $stripe2arrayofwebhookevents;
 					if (GETPOST('webhook', 'alpha') == $conf->global->STRIPE22_TEST_WEBHOOK_ID) {
@@ -596,7 +596,7 @@ if (empty($conf->stripe2connect->enabled)) {
 		if (getDolGlobalString('STRIPE2_LIVE_WEBHOOK_KEY') && getDolGlobalString('STRIPE2_LIVE_SECRET_KEY') && getDolGlobalString('STRIPE2_LIVE_WEBHOOK_ID')) {
 			if (utf8_check($conf->global->STRIPE2_TEST_SECRET_KEY)) {
 				try {
-					\Stripe\Stripe2::setApiKey($conf->global->STRIPE2_LIVE_SECRET_KEY);
+					\Stripe\Stripe::setApiKey($conf->global->STRIPE2_LIVE_SECRET_KEY);
 					$endpoint = \Stripe\WebhookEndpoint::retrieve($conf->global->STRIPE2_LIVE_WEBHOOK_ID);
 					$endpoint->enabled_events = $stripe2arrayofwebhookevents;
 					if (GETPOST('webhook', 'alpha') == $conf->global->STRIPE2_LIVE_WEBHOOK_ID) {
@@ -705,7 +705,7 @@ if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {	// TODO Not used by current c
 		global $stripe2arrayofkeysbyenv;
 		$site_account = $stripe2arrayofkeysbyenv[$servicestatus]['secret_key'];
 		if (!empty($site_account)) {
-			\Stripe\Stripe2::setApiKey($site_account);
+			\Stripe\Stripe::setApiKey($site_account);
 		}
 		if (isModEnabled('stripe2') && (!getDolGlobalString('STRIPE2_LIVE') || GETPOST('forcesandbox', 'alpha'))) {
 			$service = 'StripeTest';

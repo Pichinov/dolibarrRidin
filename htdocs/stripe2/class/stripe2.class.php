@@ -189,7 +189,7 @@ class Stripe2 extends CommonObject
 
 		// Force to use the correct API key
 		global $stripe2arrayofkeysbyenv;
-		\Stripe\Stripe2::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
+		\Stripe\Stripe::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
 
 		$sql = "SELECT sa.key_account as key_account, sa.entity"; // key_account is cus_....
 		$sql .= " FROM " . MAIN_DB_PREFIX . "societe_account as sa";
@@ -249,7 +249,7 @@ class Stripe2 extends CommonObject
 				try {
 					// Force to use the correct API key
 					global $stripe2arrayofkeysbyenv;
-					\Stripe\Stripe2::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
+					\Stripe\Stripe::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
 
 					if (empty($key)) {				// If the Stripe2 connect account not set, we use common API usage
 						$customer = \Stripe\Customer::create($dataforcustomer);
@@ -301,7 +301,7 @@ class Stripe2 extends CommonObject
 		try {
 			// Force to use the correct API key
 			global $stripe2arrayofkeysbyenv;
-			\Stripe\Stripe2::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
+			\Stripe\Stripe::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
 			if (empty($key)) {				// If the Stripe2 connect account not set, we use common API usage
 				$stripe2paymentmethod = \Stripe\PaymentMethod::retrieve((string) $paymentmethod->id);
 			} else {
@@ -329,7 +329,7 @@ class Stripe2 extends CommonObject
 		try {
 			// Force to use the correct API key
 			global $stripe2arrayofkeysbyenv;
-			\Stripe\Stripe2::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
+			\Stripe\Stripe::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
 			if (empty($key)) {				// If the stripe2 connect account not set, we use common API usage
 				$selectedreader = \Stripe\Terminal\Reader::retrieve((string) $reader);
 			} else {
@@ -432,7 +432,7 @@ class Stripe2 extends CommonObject
 
 					// Force to use the correct API key
 					global $stripe2arrayofkeysbyenv;
-					\Stripe\Stripe2::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
+					\Stripe\Stripe::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
 
 					try {
 						if (empty($key)) {				// If the Stripe2 connect account not set, we use common API usage
@@ -551,7 +551,7 @@ class Stripe2 extends CommonObject
 			try {
 				// Force to use the correct API key
 				global $stripe2arrayofkeysbyenv;
-				\Stripe\Stripe2::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
+				\Stripe\Stripe::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
 
 				$arrayofoptions = array();
 				if (empty($noidempotency_key)) {
@@ -752,7 +752,7 @@ class Stripe2 extends CommonObject
 			try {
 				// Force to use the correct API key
 				global $stripe2arrayofkeysbyenv;
-				\Stripe\Stripe2::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
+				\Stripe\Stripe::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
 
 				dol_syslog(get_class($this) . "::getSetupIntent " . $stripe2arrayofkeysbyenv[$status]['publishable_key'], LOG_DEBUG);
 				dol_syslog(get_class($this) . "::getSetupIntent dataforintent to create setupintent = " . var_export($dataforintent, true));
@@ -1247,7 +1247,7 @@ class Stripe2 extends CommonObject
 		try {
 			// Force to use the correct API key
 			global $stripe2arrayofkeysbyenv;
-			\Stripe\Stripe2::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
+			\Stripe\Stripe::setApiKey($stripe2arrayofkeysbyenv[$status]['secret_key']);
 
 			if (empty($conf->stripe2connect->enabled)) {	// With a common stripe2 account
 				if (preg_match('/pm_/i', $source)) {
