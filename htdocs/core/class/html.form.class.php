@@ -1167,14 +1167,16 @@ class Form
 		global $langs;
 
 		// If product & services are enabled or both disabled.
-		if ($forceall == 1 || (empty($forceall) && isModEnabled("product") && isModEnabled("service"))
-			|| (empty($forceall) && !isModEnabled('product') && !isModEnabled('service'))) {
+		if (
+			$forceall == 1 || (empty($forceall) && isModEnabled("product") && isModEnabled("service"))
+			|| (empty($forceall) && !isModEnabled('product') && !isModEnabled('service'))
+		) {
 			if (empty($hidetext)) {
-				print $langs->trans("Type").'...';
+				print $langs->trans("Type") . '...';
 			}
-			print '<select class="flat'.($morecss ? ' '.$morecss : '').'" id="select_' . $htmlname . '" name="' . $htmlname . '">';
+			print '<select class="flat' . ($morecss ? ' ' . $morecss : '') . '" id="select_' . $htmlname . '" name="' . $htmlname . '">';
 			if ($showempty) {
-				print '<option value="-1" class="opacitymedium"'.($useajaxcombo ? '' : ' disabled="disabled"');
+				print '<option value="-1" class="opacitymedium"' . ($useajaxcombo ? '' : ' disabled="disabled"');
 				if ($selected == -1) {
 					print ' selected';
 				}
@@ -1381,7 +1383,7 @@ class Form
 
 			$out .= ajax_event($htmlname, $events);
 
-			$out .= ajax_autocompleter($selected, $htmlname, DOL_URL_ROOT.'/societe/ajax/company.php', $urloption, getDolGlobalInt('COMPANY_USE_SEARCH_TO_SELECT'), 0, $ajaxoptions);
+			$out .= ajax_autocompleter($selected, $htmlname, DOL_URL_ROOT . '/societe/ajax/company.php', $urloption, getDolGlobalInt('COMPANY_USE_SEARCH_TO_SELECT'), 0, $ajaxoptions);
 		} else {
 			// Immediate load of all database
 			$out .= $this->select_thirdparty_list($selected, $htmlname, $filter, $showempty, $showtype, $forcecombo, $events, '', 0, $limit, $morecss, $moreparam, $multiple, $excludeids, $showcode);
@@ -1460,7 +1462,7 @@ class Form
 
 			$out .= ajax_event($htmlname, $events);
 
-			$out .= ajax_autocompleter($selected, $htmlname, DOL_URL_ROOT.'/contact/ajax/contact.php', $urloption, getDolGlobalInt('CONTACT_USE_SEARCH_TO_SELECT'), 0, $events);
+			$out .= ajax_autocompleter($selected, $htmlname, DOL_URL_ROOT . '/contact/ajax/contact.php', $urloption, getDolGlobalInt('CONTACT_USE_SEARCH_TO_SELECT'), 0, $events);
 		} else {
 			// Immediate load of all database
 			$multiple = false;
@@ -1615,7 +1617,7 @@ class Form
 		$sql .= $this->db->plimit($limit, 0);
 
 		// Build output string
-		dol_syslog(get_class($this)."::select_thirdparty_list", LOG_DEBUG);
+		dol_syslog(get_class($this) . "::select_thirdparty_list", LOG_DEBUG);
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			// Construct $out and $outarray
@@ -1660,7 +1662,7 @@ class Form
 					}
 
 					if (getDolGlobalString('SOCIETE_SHOW_VAT_IN_LIST') && !empty($obj->tva_intra)) {
-						$label .= ' - '.$obj->tva_intra;
+						$label .= ' - ' . $obj->tva_intra;
 					}
 
 					$labelhtml = $label;
@@ -1821,7 +1823,7 @@ class Form
 			$sql .= " LEFT OUTER JOIN  " . $this->db->prefix() . "societe as s ON s.rowid=sp.fk_soc";
 		}
 		$sql .= " WHERE sp.entity IN (" . getEntity('contact') . ")";
-		$sql .= " AND ((sp.fk_user_creat = ".((int) $user->id)." AND sp.priv = 1) OR sp.priv = 0)"; // check if this is a private contact
+		$sql .= " AND ((sp.fk_user_creat = " . ((int) $user->id) . " AND sp.priv = 1) OR sp.priv = 0)"; // check if this is a private contact
 		if ($socid > 0 || $socid == -1) {
 			$sql .= " AND sp.fk_soc = " . ((int) $socid);
 		}
@@ -2212,7 +2214,7 @@ class Form
 			}
 		} else {
 			if (isModEnabled('multicompany') && getDolGlobalInt('MULTICOMPANY_TRANSVERSE_MODE')) {
-				$sql .= " WHERE u.rowid IN (SELECT ug.fk_user FROM ".$this->db->prefix()."usergroup_user as ug WHERE ug.entity IN (".getEntity('usergroup')."))";
+				$sql .= " WHERE u.rowid IN (SELECT ug.fk_user FROM " . $this->db->prefix() . "usergroup_user as ug WHERE ug.entity IN (" . getEntity('usergroup') . "))";
 			} else {
 				$sql .= " WHERE u.entity IN (" . getEntity('user') . ")";
 			}
@@ -2241,7 +2243,7 @@ class Form
 			$sql .= forgeSQLFromUniversalSearchCriteria($morefilter, $errormessage);
 			if ($errormessage) {
 				$this->errors[] = $errormessage;
-				dol_syslog(__METHOD__.' '.implode(',', $this->errors), LOG_ERR);
+				dol_syslog(__METHOD__ . ' ' . implode(',', $this->errors), LOG_ERR);
 				if ($outputmode == 0) {
 					return 'Error bad param $morefilter';
 				} else {
@@ -2363,7 +2365,7 @@ class Form
 						} else {
 							if ($obj->entity != $conf->entity) {
 								$moreinfo .= ($moreinfo ? ' - ' : ' (') . ($obj->label ? $obj->label : $langs->trans("EntityNameNotDefined"));
-								$moreinfohtml .= ($moreinfohtml ? ' - ' : ' <span class="opacitymedium">(').($obj->label ? $obj->label : $langs->trans("EntityNameNotDefined"));
+								$moreinfohtml .= ($moreinfohtml ? ' - ' : ' <span class="opacitymedium">(') . ($obj->label ? $obj->label : $langs->trans("EntityNameNotDefined"));
 							}
 						}
 					}
@@ -2580,8 +2582,8 @@ class Form
 		// phpcs:enable
 		global $langs;
 
-		require_once DOL_DOCUMENT_ROOT.'/resource/class/html.formresource.class.php';
-		require_once DOL_DOCUMENT_ROOT.'/resource/class/dolresource.class.php';
+		require_once DOL_DOCUMENT_ROOT . '/resource/class/html.formresource.class.php';
+		require_once DOL_DOCUMENT_ROOT . '/resource/class/dolresource.class.php';
 		$formresources = new FormResource($this->db);
 		$resourcestatic = new Dolresource($this->db);
 
@@ -2613,7 +2615,7 @@ class Form
 			if ($showproperties) {
 				if (is_array($listofresourceid) && count($listofresourceid)) {
 					$out .= '<div class="myavailability inline-block">';
-					$out .= '<span class="hideonsmartphone">&nbsp;-&nbsp;<span class="opacitymedium">' . $langs->trans("Availability") . ':</span>  </span><input id="transparencyresource'.$value['id'].'" class="paddingrightonly" ' . ($action == 'view' ? 'disabled' : '') . ' type="checkbox" name="transparency"' . ($listofresourceid[$value['id']]['transparency'] ? ' checked' : '') . '><label for="transparencyresource'.$value['id'].'">' . $langs->trans("Busy") . '</label>';
+					$out .= '<span class="hideonsmartphone">&nbsp;-&nbsp;<span class="opacitymedium">' . $langs->trans("Availability") . ':</span>  </span><input id="transparencyresource' . $value['id'] . '" class="paddingrightonly" ' . ($action == 'view' ? 'disabled' : '') . ' type="checkbox" name="transparency"' . ($listofresourceid[$value['id']]['transparency'] ? ' checked' : '') . '><label for="transparencyresource' . $value['id'] . '">' . $langs->trans("Busy") . '</label>';
 					$out .= '</div>';
 				}
 			}
@@ -2702,7 +2704,7 @@ class Form
 		}
 
 		if (!empty($conf->use_javascript_ajax) && getDolGlobalString('PRODUIT_USE_SEARCH_TO_SELECT')) {
-			$placeholder = (is_numeric($showempty) ? '' : 'placeholder="'.dolPrintHTML($showempty).'"');
+			$placeholder = (is_numeric($showempty) ? '' : 'placeholder="' . dolPrintHTML($showempty) . '"');
 
 			if ($selected && empty($selected_input_value)) {
 				require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
@@ -2976,7 +2978,7 @@ class Form
 		$parameters = array();
 		$reshook = $hookmanager->executeHooks('selectProductsListSelect', $parameters); // Note that $action and $object may have been modified by hook
 		if (empty($reshook)) {
-			$sql .= $selectFields.$selectFieldsGrouped.$hookmanager->resPrint;
+			$sql .= $selectFields . $selectFieldsGrouped . $hookmanager->resPrint;
 		} else {
 			$sql .= $hookmanager->resPrint;
 		}
@@ -3026,7 +3028,7 @@ class Form
 			$selectFields .= ", price_rowid, price_by_qty";
 		}
 
-		$sql .= " FROM ".$this->db->prefix()."product as p";
+		$sql .= " FROM " . $this->db->prefix() . "product as p";
 
 		if (getDolGlobalString('MAIN_SEARCH_PRODUCT_FORCE_INDEX')) {
 			$sql .= " USE INDEX (" . $this->db->sanitize(getDolGlobalString('MAIN_PRODUCT_FORCE_INDEX')) . ")";
@@ -3081,10 +3083,10 @@ class Form
 		if ($finished == 0) {
 			$sql .= " AND p.finished = " . ((int) $finished);
 		} elseif ($finished == 1) {
-			$sql .= " AND p.finished = ".((int) $finished);
+			$sql .= " AND p.finished = " . ((int) $finished);
 		}
 		if ($status >= 0) {
-			$sql .= " AND p.tosell = ".((int) $status);
+			$sql .= " AND p.tosell = " . ((int) $status);
 		}
 		if ($status_purchase >= 0) {
 			$sql .= " AND p.tobuy = " . ((int) $status_purchase);
@@ -3099,7 +3101,7 @@ class Form
 		}
 
 		if ((int) $warehouseId > 0) {
-			$sql .= " AND EXISTS (SELECT psw.fk_product FROM " . $this->db->prefix() . "product_stock as psw WHERE psw.reel>0 AND psw.fk_entrepot=".(int) $warehouseId." AND psw.fk_product = p.rowid)";
+			$sql .= " AND EXISTS (SELECT psw.fk_product FROM " . $this->db->prefix() . "product_stock as psw WHERE psw.reel>0 AND psw.fk_entrepot=" . (int) $warehouseId . " AND psw.fk_product = p.rowid)";
 		}
 
 		// Add where from hooks
@@ -3108,7 +3110,7 @@ class Form
 		$sql .= $hookmanager->resPrint;
 		// Add criteria on ref/label
 		if ($filterkey != '') {
-			$sqlSupplierSearch= '';
+			$sqlSupplierSearch = '';
 
 			$sql .= ' AND (';
 			$prefix = !getDolGlobalString('PRODUCT_DONOTSEARCH_ANYWHERE') ? '%' : ''; // Can use index if PRODUCT_DONOTSEARCH_ANYWHERE is on
@@ -3138,7 +3140,7 @@ class Form
 
 				// include search in supplier ref
 				if (getDolGlobalString('MAIN_SEARCH_PRODUCT_BY_FOURN_REF')) {
-					$sqlSupplierSearch .= !empty($sqlSupplierSearch) ? ' AND ':'';
+					$sqlSupplierSearch .= !empty($sqlSupplierSearch) ? ' AND ' : '';
 					$sqlSupplierSearch .= " pfp.ref_fourn LIKE '" . $this->db->escape($prefix . $crit) . "%'";
 				}
 				$sql .= ")";
@@ -3617,11 +3619,11 @@ class Form
 		}
 
 		if ($stocktag == 1) {
-			$opt .= ' class="product_line_stock_ok" data-html="'.$labeltoshowhtml.$outvalUnits.$labeltoshowhtmlprice.dolPrintHTMLForAttribute($labeltoshowhtmlstock).'"';
+			$opt .= ' class="product_line_stock_ok" data-html="' . $labeltoshowhtml . $outvalUnits . $labeltoshowhtmlprice . dolPrintHTMLForAttribute($labeltoshowhtmlstock) . '"';
 			//$opt .= ' class="product_line_stock_ok"';
 		}
 		if ($stocktag == -1) {
-			$opt .= ' class="product_line_stock_too_low" data-html="'.$labeltoshowhtml.$outvalUnits.$labeltoshowhtmlprice.dolPrintHTMLForAttribute($labeltoshowhtmlstock).'"';
+			$opt .= ' class="product_line_stock_too_low" data-html="' . $labeltoshowhtml . $outvalUnits . $labeltoshowhtmlprice . dolPrintHTMLForAttribute($labeltoshowhtmlstock) . '"';
 			//$opt .= ' class="product_line_stock_too_low"';
 		}
 
@@ -3719,7 +3721,7 @@ class Form
 			$urloption = ($socid > 0 ? 'socid=' . $socid . '&' : '') . 'htmlname=' . $htmlname . '&outjson=1&price_level=' . $price_level . '&type=' . $filtertype . '&mode=2&status=' . $status . '&finished=' . $finished . '&alsoproductwithnosupplierprice=' . $alsoproductwithnosupplierprice;
 			print ajax_autocompleter($selected, $htmlname, DOL_URL_ROOT . '/product/ajax/products.php', $urloption, getDolGlobalInt('PRODUIT_USE_SEARCH_TO_SELECT'), 0, $ajaxoptions);
 
-			print($hidelabel ? '' : $langs->trans("RefOrLabel") . ' : ') . '<input type="text" class="'.$morecss.'" name="search_' . $htmlname . '" id="search_' . $htmlname . '" value="' . $selected_input_value . '"' . ($placeholder ? ' placeholder="' . $placeholder . '"' : '') . '>';
+			print ($hidelabel ? '' : $langs->trans("RefOrLabel") . ' : ') . '<input type="text" class="' . $morecss . '" name="search_' . $htmlname . '" id="search_' . $htmlname . '" value="' . $selected_input_value . '"' . ($placeholder ? ' placeholder="' . $placeholder . '"' : '') . '>';
 		} else {
 			print $this->select_produits_fournisseurs_list($socid, $selected, $htmlname, $filtertype, $filtre, '', $status, 0, 0, $alsoproductwithnosupplierprice, $morecss, 0, $placeholder);
 		}
@@ -4764,7 +4766,7 @@ class Form
 			}
 
 			if ($format == 0) {
-				$out .= '<option value="' . $id . '" data-code="'.$arraytypes['code'].'"';
+				$out .= '<option value="' . $id . '" data-code="' . $arraytypes['code'] . '"';
 			} elseif ($format == 1) {
 				$out .= '<option value="' . $arraytypes['code'] . '"';
 			} elseif ($format == 2) {
@@ -4960,7 +4962,7 @@ class Form
 		}
 		print '</select>';
 
-		print ajax_combobox("select".$htmlname);
+		print ajax_combobox("select" . $htmlname);
 
 		if ($user->admin && !$noadmininfo) {
 			print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
@@ -5217,7 +5219,7 @@ class Form
 				}
 			} else {
 				if (!empty($useempty) && !is_numeric($useempty)) {
-					$out .= '<option value="-1">'.$langs->trans($useempty).'</option>';
+					$out .= '<option value="-1">' . $langs->trans($useempty) . '</option>';
 				} elseif ($useempty == 1 || ($useempty == 2 && $num > 1)) {
 					$out .= '<option value="-1">&nbsp;</option>';
 				}
@@ -5238,9 +5240,9 @@ class Form
 				}
 
 				if ($selected == $obj->rowid || ($useempty == 2 && $num == 1 && empty($selected))) {
-					$out .= '<option value="' . $obj->rowid . '" data-currency-code="' . $obj->currency_code . '" data-html="'.dolPrintHTMLForAttribute($labeltoshowhtml).'" selected>';
+					$out .= '<option value="' . $obj->rowid . '" data-currency-code="' . $obj->currency_code . '" data-html="' . dolPrintHTMLForAttribute($labeltoshowhtml) . '" selected>';
 				} else {
-					$out .= '<option value="' . $obj->rowid . '" data-currency-code="' . $obj->currency_code . '" data-html="'.dolPrintHTMLForAttribute($labeltoshowhtml).'">';
+					$out .= '<option value="' . $obj->rowid . '" data-currency-code="' . $obj->currency_code . '" data-html="' . dolPrintHTMLForAttribute($labeltoshowhtml) . '">';
 				}
 				$out .= $labeltoshow;
 				$out .= '</option>';
@@ -5304,7 +5306,7 @@ class Form
 				$out .= '<option class="opacitymedium" value="-1">' . $langs->trans("NoBankAccountDefined") . '</span>';
 			} else {
 				if (!empty($useempty) && !is_numeric($useempty)) {
-					$out .= '<option value="-1">'.$langs->trans($useempty).'</option>';
+					$out .= '<option value="-1">' . $langs->trans($useempty) . '</option>';
 				} elseif ($useempty == 1 || ($useempty == 2 && $num > 1)) {
 					$out .= '<option value="-1">&nbsp;</option>';
 				}
@@ -5320,7 +5322,7 @@ class Form
 				}
 				$out .= trim($obj->label);
 				if ($showibanbic) {
-					$out .= ' (' . $iban . '/' .$obj->bic. ')';
+					$out .= ' (' . $iban . '/' . $obj->bic . ')';
 				}
 				$out .= '</option>';
 				$i++;
@@ -5482,7 +5484,7 @@ class Form
 				if ($result) {
 					print $bankstatic->label;
 					if ($showibanbic) {
-						print ' (' . $bankstatic->iban . '/' .$bankstatic->bic. ')';
+						print ' (' . $bankstatic->iban . '/' . $bankstatic->bic . ')';
 					}
 				}
 			} else {
@@ -5791,14 +5793,14 @@ class Form
 							$m = isset($input['minutes']) ? $input['minutes'] : 1;
 						}
 						$more .= $this->selectDate(isset($input['value']) ? $input['value'] : -1, $input['name'], $h, $m, 0, '', 1, $addnowlink);
-						$more .= '</div></div>'."\n";
-						$formquestion[] = array('name' => $input['name'].'day');
-						$formquestion[] = array('name' => $input['name'].'month');
-						$formquestion[] = array('name' => $input['name'].'year');
-						$formquestion[] = array('name' => $input['name'].'hour');
-						$formquestion[] = array('name' => $input['name'].'min');
+						$more .= '</div></div>' . "\n";
+						$formquestion[] = array('name' => $input['name'] . 'day');
+						$formquestion[] = array('name' => $input['name'] . 'month');
+						$formquestion[] = array('name' => $input['name'] . 'year');
+						$formquestion[] = array('name' => $input['name'] . 'hour');
+						$formquestion[] = array('name' => $input['name'] . 'min');
 					} elseif ($input['type'] == 'other') { // can be 1 column or 2 depending if label is set or not
-						$more .= '<div class="tagtr"><div class="tagtd'.(empty($input['tdclass']) ? '' : (' '.$input['tdclass'])).'">';
+						$more .= '<div class="tagtr"><div class="tagtd' . (empty($input['tdclass']) ? '' : (' ' . $input['tdclass'])) . '">';
 						if (!empty($input['label'])) {
 							$more .= $input['label'] . '</div><div class="tagtd">';
 						}
@@ -5900,8 +5902,8 @@ class Form
 
 			$formconfirm .= '
                     resizable: false,
-                    height: \'' . ((int) $height) . '\',
-                    width: \'' . ((int) $width) . '\',
+					height: \'' . dol_escape_js($height) . '\',
+                    width: \'' . dol_escape_js($width) . '\',
                     modal: true,
                     closeOnEscape: false,
                     buttons: {
@@ -6827,10 +6829,10 @@ class Form
 		dol_syslog(__METHOD__, LOG_DEBUG);
 
 		$sql = "SELECT t.rowid, t.type_vat, t.code, t.taux, t.localtax1, t.localtax1_type, t.localtax2, t.localtax2_type, t.recuperableonly";
-		$sql .= " FROM ".$this->db->prefix()."c_tva as t, ".$this->db->prefix()."c_country as c";
+		$sql .= " FROM " . $this->db->prefix() . "c_tva as t, " . $this->db->prefix() . "c_country as c";
 		$sql .= " WHERE t.fk_pays = c.rowid";
 		$sql .= " AND t.active > 0";
-		$sql .= " AND t.entity IN (".getEntity('c_tva').")";
+		$sql .= " AND t.entity IN (" . getEntity('c_tva') . ")";
 		$sql .= " AND c.code IN (" . $this->db->sanitize($country_code, 1) . ")";
 		$sql .= " ORDER BY t.code ASC, t.taux ASC, t.recuperableonly ASC";
 
@@ -6880,7 +6882,7 @@ class Form
 					$langs->load("errors");
 					$new_country_code = $reg[1];
 					$country_id = dol_getIdFromCode($this->db, $new_country_code, 'c_pays', 'code', 'rowid');
-					$this->error .= '<br>'.$langs->trans("ErrorFixThisHere", DOL_URL_ROOT.'/admin/dict.php?id=10'.($country_id > 0 ? '&countryidforinsert='.$country_id : ''));
+					$this->error .= '<br>' . $langs->trans("ErrorFixThisHere", DOL_URL_ROOT . '/admin/dict.php?id=10' . ($country_id > 0 ? '&countryidforinsert=' . $country_id : ''));
 				}
 				$this->error .= '</span>';
 				return -1;
@@ -7378,7 +7380,7 @@ class Form
 
 					// Input area to enter date manually
 					$retstring .= '<div class="nowraponall inline-block divfordateinput">';
-					$retstring .= '<input id="'.$prefix.'" name="'.$prefix.'" type="'.($usecalendar == 'html' ? "date" : "text").'" class="maxwidthdate center" maxlength="11" value="'.$formatted_date.'"';
+					$retstring .= '<input id="' . $prefix . '" name="' . $prefix . '" type="' . ($usecalendar == 'html' ? "date" : "text") . '" class="maxwidthdate center" maxlength="11" value="' . $formatted_date . '"';
 					$retstring .= ($disabled ? ' disabled' : '');
 					$retstring .= ($placeholder ? ' placeholder="' . dol_escape_htmltag($placeholder) . '"' : '');
 					$retstring .= ' onChange="dpChangeDay(\'' . dol_escape_js($prefix) . '\',\'' . dol_escape_js($langs->trans("FormatDateShortJavaInput")) . '\'); "'; // FormatDateShortInput for dol_print_date / FormatDateShortJavaInput that is same for javascript
@@ -7636,11 +7638,11 @@ class Form
 					$tmplabeladddateof = $langs->trans("DateInvoice");
 				}
 				$reset_scripts = 'console.log(\'Click on now link\'); ';
-				$reset_scripts .= 'jQuery(\'#'.$prefix.'\').val(\''.dol_print_date($tmpadddateof, 'dayinputnoreduce').'\');';
-				$reset_scripts .= 'jQuery(\'#'.$prefix.'day\').val(\''.$tmparray['mday'].'\');';
-				$reset_scripts .= 'jQuery(\'#'.$prefix.'month\').val(\''.$tmparray['mon'].'\');';
-				$reset_scripts .= 'jQuery(\'#'.$prefix.'year\').val(\''.$tmparray['year'].'\');';
-				$retstring .= ' - <button class="dpInvisibleButtons datenowlink" id="dateofinvoice" type="button" name="_dateofinvoice" value="now" onclick="'.$reset_scripts.'">'.$tmplabeladddateof.'</button>';
+				$reset_scripts .= 'jQuery(\'#' . $prefix . '\').val(\'' . dol_print_date($tmpadddateof, 'dayinputnoreduce') . '\');';
+				$reset_scripts .= 'jQuery(\'#' . $prefix . 'day\').val(\'' . $tmparray['mday'] . '\');';
+				$reset_scripts .= 'jQuery(\'#' . $prefix . 'month\').val(\'' . $tmparray['mon'] . '\');';
+				$reset_scripts .= 'jQuery(\'#' . $prefix . 'year\').val(\'' . $tmparray['year'] . '\');';
+				$retstring .= ' - <button class="dpInvisibleButtons datenowlink" id="dateofinvoice" type="button" name="_dateofinvoice" value="now" onclick="' . $reset_scripts . '">' . $tmplabeladddateof . '</button>';
 			}
 		}
 
@@ -8591,8 +8593,8 @@ class Form
 		);
 
 		if (!is_object($objecttmp)) {
-			dol_syslog('selectForForms: Error bad setup of field objectdescorig=' . $objectdescorig.', objectfield='.$objectfield.', objectdesc='.$objectdesc, LOG_WARNING);
-			return 'selectForForms: Error bad setup of field objectdescorig=' . $objectdescorig.', objectfield='.$objectfield.', objectdesc='.$objectdesc;
+			dol_syslog('selectForForms: Error bad setup of field objectdescorig=' . $objectdescorig . ', objectfield=' . $objectfield . ', objectdesc=' . $objectdesc, LOG_WARNING);
+			return 'selectForForms: Error bad setup of field objectdescorig=' . $objectdescorig . ', objectfield=' . $objectfield . ', objectdesc=' . $objectdesc;
 		}
 		'@phan-var-force CommonObject $objecttmp';
 		/** @var CommonObject $objecttmp */
@@ -8636,7 +8638,7 @@ class Form
 
 			// Set url and param to call to get json of the search results
 			$urlforajaxcall = DOL_URL_ROOT . '/core/ajax/selectobject.php';
-			$urloption = 'htmlname=' . urlencode($htmlname) . '&outjson=1&objectdesc=' . urlencode($objectdescorig) . '&objectfield='.urlencode($objectfield) . ($sortfield ? '&sortfield=' . urlencode($sortfield) : '');
+			$urloption = 'htmlname=' . urlencode($htmlname) . '&outjson=1&objectdesc=' . urlencode($objectdescorig) . '&objectfield=' . urlencode($objectfield) . ($sortfield ? '&sortfield=' . urlencode($sortfield) : '');
 
 			// Activate the auto complete using ajax call.
 			$out .= ajax_autocompleter((string) $preSelectedValue, $htmlname, $urlforajaxcall, $urloption, getDolGlobalInt($confkeyforautocompletemode), 0);
@@ -8733,7 +8735,7 @@ class Form
 		}
 		if (!empty($objecttmp->parent_element)) {
 			$parent_properties = getElementProperties($objecttmp->parent_element);
-			$sql .= " INNER JOIN " . $this->db->prefix() . $this->db->sanitize($parent_properties['table_element']) . " as o ON o.rowid = t.".$objecttmp->fk_parent_attribute;
+			$sql .= " INNER JOIN " . $this->db->prefix() . $this->db->sanitize($parent_properties['table_element']) . " as o ON o.rowid = t." . $objecttmp->fk_parent_attribute;
 		}
 		if (in_array($objecttmp->parent_element, ['commande', 'propal', 'facture', 'expedition'])) {
 			$sql .= " LEFT JOIN " . $this->db->prefix() . "product as p ON p.rowid = t.fk_product";
@@ -8930,7 +8932,7 @@ class Form
 		$idname = str_replace(array('[', ']'), array('', ''), $htmlname);
 		$out .= '<select id="' . preg_replace('/^\./', '', $idname) . '" ' . ($disabled ? 'disabled="disabled" ' : '') . 'class="flat ' . (preg_replace('/^\./', '', $htmlname)) . ($morecss ? ' ' . $morecss : '') . ' selectformat"';
 		$out .= ' name="' . preg_replace('/^\./', '', $htmlname) . '" ' . ($moreparam ? $moreparam : '');
-		$out .= '>'."\n";
+		$out .= '>' . "\n";
 
 		if ($show_empty) {
 			$textforempty = ' ';
@@ -8974,7 +8976,8 @@ class Form
 				}
 				if (!empty($disablebademail)) {
 					if (($disablebademail == 1 && !preg_match('/&lt;.+@.+&gt;/', $value))
-						|| ($disablebademail == 2 && preg_match('/---/', $value))) {
+						|| ($disablebademail == 2 && preg_match('/---/', $value))
+					) {
 						$disabled = ' disabled';
 						$style = ' class="warning"';
 					}
@@ -9017,7 +9020,7 @@ class Form
 							$keyforvalue = 'data-html';
 						}
 						if (preg_match('/^data-/', $keyforvalue)) {	// The best solution if you want to use HTML values into the list is to use data-html.
-							$out .= ' '.dol_escape_htmltag($keyforvalue).'="'.dol_escape_htmltag($valueforvalue).'"';
+							$out .= ' ' . dol_escape_htmltag($keyforvalue) . '="' . dol_escape_htmltag($valueforvalue) . '"';
 						}
 					}
 				}
@@ -9171,7 +9174,7 @@ class Form
 			return '';
 		}
 
-		$out = '<select type="text"'.($textfortitle ? ' title="'.dol_escape_htmltag($textfortitle).'"' : '').' id="'.$htmlname.'" class="'.$htmlname.($morecss ? ' ' . $morecss : '').'"'.($moreparam ? ' '.$moreparam : '').' name="'.$htmlname.'"><option></option></select>';
+		$out = '<select type="text"' . ($textfortitle ? ' title="' . dol_escape_htmltag($textfortitle) . '"' : '') . ' id="' . $htmlname . '" class="' . $htmlname . ($morecss ? ' ' . $morecss : '') . '"' . ($moreparam ? ' ' . $moreparam : '') . ' name="' . $htmlname . '"><option></option></select>';
 
 		$formattedarrayresult = array();
 
@@ -9305,7 +9308,7 @@ class Form
 		// We need a hidden field because when using the multiselect, if we unselect all, there is no
 		// variable submitted at all, so no way to make a difference between variable not submitted and variable
 		// submitted to nothing.
-		$out .= '<input type="hidden" name="'.$htmlname.'_multiselect" value="1">';
+		$out .= '<input type="hidden" name="' . $htmlname . '_multiselect" value="1">';
 		// Output select component
 		$out .= '<select id="' . $htmlname . '" class="multiselect' . ($useenhancedmultiselect ? ' multiselectononeline' : '') . ($morecss ? ' ' . $morecss : '') . '" multiple name="' . $htmlname . '[]"' . ($moreattrib ? ' ' . $moreattrib : '') . ($width ? ' style="width: ' . (preg_match('/%/', (string) $width) ? $width : $width . 'px') . '"' : '') . '>' . "\n";
 		if (is_array($array) && !empty($array)) {
@@ -9360,7 +9363,7 @@ class Form
 				$out .= '	if ($(record.element).attr("data-html") != undefined && typeof htmlEntityDecodeJs === "function") {';
 				//$out .= '		console.log("aaa");';
 				$out .= '		return htmlEntityDecodeJs($(record.element).attr("data-html"));';
-				$out .= '	}'."\n";
+				$out .= '	}' . "\n";
 				$out .= '	return record.text;';
 				$out .= '}' . "\n";
 				$out .= 'function formatSelection(record) {' . "\n";
@@ -9485,7 +9488,7 @@ class Form
 
 				// Note: $val['checked'] <> 0 means we must show the field into the combo list  @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 				$listoffieldsforselection .= '<li><input type="checkbox" id="checkbox' . $key . '" value="' . $key . '"' . ((!array_key_exists('checked', $val) || empty($val['checked']) || $val['checked'] == '-1') ? '' : ' checked="checked"') . '/>';
-				$listoffieldsforselection .= '<label for="checkbox' . $key . '">'.dol_string_nohtmltag($langs->trans($val['label'])) . '</label></li>';
+				$listoffieldsforselection .= '<label for="checkbox' . $key . '">' . dol_string_nohtmltag($langs->trans($val['label'])) . '</label></li>';
 				$listcheckedstring .= (empty($val['checked']) ? '' : $key . ',');
 			}
 		}
@@ -9500,10 +9503,10 @@ class Form
             <input type="hidden" class="' . $htmlname . '" name="' . $htmlname . '" value="' . $listcheckedstring . '">
             </dt>
             <dd class="dropdowndd">
-                <div class="multiselectcheckbox'.$htmlname.'">
-                    <ul class="'.$htmlname.(((string) $pos == '1' || (string) $pos == 'left') ? 'left' : '').'">
-                    <li class="liinputsearch"><input class="inputsearch_dropdownselectedfields width90p minwidth200imp" style="width:90%;" type="text" placeholder="'.$langs->trans('Search').'"></li>
-                    '.$listoffieldsforselection.'
+                <div class="multiselectcheckbox' . $htmlname . '">
+                    <ul class="' . $htmlname . (((string) $pos == '1' || (string) $pos == 'left') ? 'left' : '') . '">
+                    <li class="liinputsearch"><input class="inputsearch_dropdownselectedfields width90p minwidth200imp" style="width:90%;" type="text" placeholder="' . $langs->trans('Search') . '"></li>
+                    ' . $listoffieldsforselection . '
                     </ul>
                 </div>
             </dd>
@@ -9528,7 +9531,7 @@ class Form
               });
               $("input.inputsearch_dropdownselectedfields").on("keyup", function() {
 			    var value = $(this).val().toLowerCase();
-			    $(\'.multiselectcheckbox'.$htmlname.' li > label\').filter(function() {
+			    $(\'.multiselectcheckbox' . $htmlname . ' li > label\').filter(function() {
 			      $(this).parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
 			    });
 			  });
@@ -9796,26 +9799,26 @@ class Form
 					'enabled' => isModEnabled('propal'),
 					'perms' => 1,
 					'label' => 'LinkToProposal',
-					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_client, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "propal as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('propal') . ')'.($dontIncludeCompletedItems ? ' AND t.fk_statut < 4' : ''),
+					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_client, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "propal as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('propal') . ')' . ($dontIncludeCompletedItems ? ' AND t.fk_statut < 4' : ''),
 				),
 				'shipping' => array(
 					'enabled' => isModEnabled('shipping'),
 					'perms' => 1,
 					'label' => 'LinkToExpedition',
-					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "expedition as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('shipping') . ')'.($dontIncludeCompletedItems ? ' AND t.fk_statut < 2' : ''),
+					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "expedition as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('shipping') . ')' . ($dontIncludeCompletedItems ? ' AND t.fk_statut < 2' : ''),
 				),
 				'order' => array(
 					'enabled' => isModEnabled('order'),
 					'perms' => 1,
 					'label' => 'LinkToOrder',
-					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_client, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "commande as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('commande') . ')'.($dontIncludeCompletedItems ? ' AND t.facture < 1' : ''),
+					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_client, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "commande as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('commande') . ')' . ($dontIncludeCompletedItems ? ' AND t.facture < 1' : ''),
 					'linkname' => 'commande',
 				),
 				'invoice' => array(
 					'enabled' => isModEnabled('invoice'),
 					'perms' => 1,
 					'label' => 'LinkToInvoice',
-					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_client, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "facture as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('invoice') . ')'.($dontIncludeCompletedItems ? ' AND t.paye < 1' : ''),
+					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_client, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "facture as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('invoice') . ')' . ($dontIncludeCompletedItems ? ' AND t.paye < 1' : ''),
 					'linkname' => 'facture',
 				),
 				'invoice_template' => array(
@@ -9841,38 +9844,39 @@ class Form
 					'enabled' => isModEnabled('supplier_proposal'),
 					'perms' => 1,
 					'label' => 'LinkToSupplierProposal',
-					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, '' as ref_supplier, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "supplier_proposal as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('supplier_proposal') . ')'.($dontIncludeCompletedItems ? ' AND t.fk_statut < 4' : ''),
+					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, '' as ref_supplier, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "supplier_proposal as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('supplier_proposal') . ')' . ($dontIncludeCompletedItems ? ' AND t.fk_statut < 4' : ''),
 				),
 				'order_supplier' => array(
 					'enabled' => isModEnabled("supplier_order"),
 					'perms' => 1,
 					'label' => 'LinkToSupplierOrder',
-					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_supplier, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "commande_fournisseur as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('commande_fournisseur') . ')'.($dontIncludeCompletedItems ? ' AND t.billed < 1' : ''),
+					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_supplier, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "commande_fournisseur as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('commande_fournisseur') . ')' . ($dontIncludeCompletedItems ? ' AND t.billed < 1' : ''),
 				),
 				'invoice_supplier' => array(
 					'enabled' => isModEnabled("supplier_invoice"),
-					'perms' => 1, 'label' => 'LinkToSupplierInvoice',
-					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_supplier, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "facture_fourn as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('facture_fourn') . ')'.($dontIncludeCompletedItems ? ' AND t.paye < 1' : ''),
+					'perms' => 1,
+					'label' => 'LinkToSupplierInvoice',
+					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_supplier, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "facture_fourn as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('facture_fourn') . ')' . ($dontIncludeCompletedItems ? ' AND t.paye < 1' : ''),
 				),
 				'ticket' => array(
 					'enabled' => isModEnabled('ticket'),
 					'perms' => 1,
 					'label' => 'LinkToTicket',
-					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.track_id, '0' as total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "ticket as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('ticket') . ')'.($dontIncludeCompletedItems ? ' AND t.fk_statut < 8' : ''),
+					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.track_id, '0' as total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . "ticket as t WHERE t.fk_soc = s.rowid AND t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('ticket') . ')' . ($dontIncludeCompletedItems ? ' AND t.fk_statut < 8' : ''),
 				),
 				'mo' => array(
 					'enabled' => isModEnabled('mrp'),
 					'perms' => 1,
 					'label' => 'LinkToMo',
-					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.rowid, '0' as total_ht FROM " . $this->db->prefix() . "societe as s INNER JOIN " . $this->db->prefix() . "mrp_mo as t ON t.fk_soc = s.rowid  WHERE  t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('mo') . ')'.($dontIncludeCompletedItems ? ' AND t.status < 3' : ''),
+					'sql' => "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.rowid, '0' as total_ht FROM " . $this->db->prefix() . "societe as s INNER JOIN " . $this->db->prefix() . "mrp_mo as t ON t.fk_soc = s.rowid  WHERE  t.fk_soc IN (" . $this->db->sanitize($listofidcompanytoscan) . ') AND t.entity IN (' . getEntity('mo') . ')' . ($dontIncludeCompletedItems ? ' AND t.status < 3' : ''),
 				),
 			);
 		}
 
 		if ($object->table_element == 'commande_fournisseur') {
-			$possiblelinks['mo']['sql'] = "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.rowid, '0' as total_ht FROM ".$this->db->prefix()."societe as s INNER JOIN ".$this->db->prefix().'mrp_mo as t ON t.fk_soc = s.rowid  WHERE t.entity IN ('.getEntity('mo').')'.($dontIncludeCompletedItems ? ' AND t.status < 3' : '');
+			$possiblelinks['mo']['sql'] = "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.rowid, '0' as total_ht FROM " . $this->db->prefix() . "societe as s INNER JOIN " . $this->db->prefix() . 'mrp_mo as t ON t.fk_soc = s.rowid  WHERE t.entity IN (' . getEntity('mo') . ')' . ($dontIncludeCompletedItems ? ' AND t.status < 3' : '');
 		} elseif ($object->table_element == 'mrp_mo') {
-			$possiblelinks['order_supplier']['sql'] = "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_supplier, t.total_ht FROM ".$this->db->prefix()."societe as s, ".$this->db->prefix().'commande_fournisseur as t WHERE t.fk_soc = s.rowid AND t.entity IN ('.getEntity('commande_fournisseur').')'.($dontIncludeCompletedItems ? ' AND t.billed < 1' : '');
+			$possiblelinks['order_supplier']['sql'] = "SELECT s.rowid as socid, s.nom as name, s.client, t.rowid, t.ref, t.ref_supplier, t.total_ht FROM " . $this->db->prefix() . "societe as s, " . $this->db->prefix() . 'commande_fournisseur as t WHERE t.fk_soc = s.rowid AND t.entity IN (' . getEntity('commande_fournisseur') . ')' . ($dontIncludeCompletedItems ? ' AND t.billed < 1' : '');
 		}
 
 		$reshook = 0; // Ensure $reshook is defined for static analysis
@@ -9910,8 +9914,8 @@ class Form
 
 				// Section for free ref input
 				if (!getDolGlobalString('MAIN_HIDE_LINK_BY_REF_IN_LINKTO')) {
-					$htmltoenteralink .= '<br>'."\n";
-					$htmltoenteralink .= '<!-- form to add a link from anywhere -->'."\n";
+					$htmltoenteralink .= '<br>' . "\n";
+					$htmltoenteralink .= '<!-- form to add a link from anywhere -->' . "\n";
 					$htmltoenteralink .= '<form action="' . $_SERVER["PHP_SELF"] . '" method="POST" name="formlinkedbyref' . $key . '">';
 					$htmltoenteralink .= '<input type="hidden" name="token" value="' . newToken() . '">';
 					$htmltoenteralink .= '<input type="hidden" name="action" value="addlinkbyref">';
@@ -9920,7 +9924,7 @@ class Form
 					$htmltoenteralink .= '<table class="noborder">';
 					$htmltoenteralink .= '<tr class="liste_titre">';
 					//print '<td>' . $langs->trans("Ref") . '</td>';
-					$htmltoenteralink .= '<td class="center"><input type="text" placeholder="'.dol_escape_htmltag($langs->trans("Ref")).'" name="reftolinkto" value="' . dol_escape_htmltag(GETPOST('reftolinkto', 'alpha')) . '">&nbsp;';
+					$htmltoenteralink .= '<td class="center"><input type="text" placeholder="' . dol_escape_htmltag($langs->trans("Ref")) . '" name="reftolinkto" value="' . dol_escape_htmltag(GETPOST('reftolinkto', 'alpha')) . '">&nbsp;';
 					$htmltoenteralink .= '<input type="submit" class="button smallpaddingimp valignmiddle" value="' . $langs->trans('ToLink') . '">&nbsp;';
 					$htmltoenteralink .= '<input type="submit" class="button smallpaddingimp" name="cancel" value="' . $langs->trans('Cancel') . '"></td>';
 					$htmltoenteralink .= '</tr>';
@@ -9940,7 +9944,7 @@ class Form
 						if (getDolGlobalString('MAIN_HIDE_LINK_BY_REF_IN_LINKTO')) {
 							$htmltoenteralink .= '<br>';
 						}
-						$htmltoenteralink .= '<!-- form to add a link from object to same thirdparty -->'."\n";
+						$htmltoenteralink .= '<!-- form to add a link from object to same thirdparty -->' . "\n";
 						$htmltoenteralink .= '<form action="' . $_SERVER["PHP_SELF"] . '" method="POST" name="formlinked' . $key . '">';
 						$htmltoenteralink .= '<input type="hidden" name="token" value="' . newToken() . '">';
 						$htmltoenteralink .= '<input type="hidden" name="action" value="addlink">';
@@ -10199,7 +10203,7 @@ class Form
 				if (empty($object->next_prev_filter) && preg_match('/^\s*AND/i', $hookmanager->resPrint)) {
 					$object->next_prev_filter = preg_replace('/^\s*AND\s*/i', '', $hookmanager->resPrint);
 				} elseif (!empty($object->next_prev_filter) && !preg_match('/^\s*AND/i', $hookmanager->resPrint)) {
-					$object->next_prev_filter .= ' AND '.$hookmanager->resPrint;
+					$object->next_prev_filter .= ' AND ' . $hookmanager->resPrint;
 				} else {
 					$object->next_prev_filter .= $hookmanager->resPrint;
 				}
@@ -10231,8 +10235,8 @@ class Form
 				$stringforfirstkey .= ' CTL +';
 			}
 
-			$previous_ref = $object->ref_previous ? '<a accesskey="p" alt="'.dol_escape_htmltag($langs->trans("Previous")).'" title="' . $stringforfirstkey . ' p" class="classfortooltip" href="' . $navurl . '?' . $paramid . '=' . urlencode($object->ref_previous) . $moreparam . '"><i class="fa fa-chevron-left"></i></a>' : '<span class="inactive"><i class="fa fa-chevron-left opacitymedium"></i></span>';
-			$next_ref = $object->ref_next ? '<a accesskey="n" alt="'.dol_escape_htmltag($langs->trans("Next")).'" title="' . $stringforfirstkey . ' n" class="classfortooltip" href="' . $navurl . '?' . $paramid . '=' . urlencode($object->ref_next) . $moreparam . '"><i class="fa fa-chevron-right"></i></a>' : '<span class="inactive"><i class="fa fa-chevron-right opacitymedium"></i></span>';
+			$previous_ref = $object->ref_previous ? '<a accesskey="p" alt="' . dol_escape_htmltag($langs->trans("Previous")) . '" title="' . $stringforfirstkey . ' p" class="classfortooltip" href="' . $navurl . '?' . $paramid . '=' . urlencode($object->ref_previous) . $moreparam . '"><i class="fa fa-chevron-left"></i></a>' : '<span class="inactive"><i class="fa fa-chevron-left opacitymedium"></i></span>';
+			$next_ref = $object->ref_next ? '<a accesskey="n" alt="' . dol_escape_htmltag($langs->trans("Next")) . '" title="' . $stringforfirstkey . ' n" class="classfortooltip" href="' . $navurl . '?' . $paramid . '=' . urlencode($object->ref_next) . $moreparam . '"><i class="fa fa-chevron-right"></i></a>' : '<span class="inactive"><i class="fa fa-chevron-right opacitymedium"></i></span>';
 		}
 
 		//print "xx".$previous_ref."x".$next_ref;
@@ -10333,7 +10337,7 @@ class Form
 				$ret .= dol_htmlentities($fullname) . $addgendertxt . ((!empty($object->societe) && $object->societe != $fullname) ? ' (' . dol_htmlentities($object->societe) . ')' : '');
 			}
 		} elseif (in_array($object->element, array('contact', 'user'))) {
-			$ret .= '<span class="valignmiddle">'.dol_htmlentities($object->getFullName($langs)).'</span>'.$addgendertxt;
+			$ret .= '<span class="valignmiddle">' . dol_htmlentities($object->getFullName($langs)) . '</span>' . $addgendertxt;
 		} elseif ($object->element == 'usergroup') {
 			$ret .= dol_htmlentities($object->name);
 		} elseif (in_array($object->element, array('action', 'agenda'))) {
@@ -10352,7 +10356,7 @@ class Form
 				$ret .= ' ';
 			}
 
-			$ret .= '<!-- morehtmlref -->'.$morehtmlref;
+			$ret .= '<!-- morehtmlref -->' . $morehtmlref;
 		}
 
 		$ret .= '</div>';
@@ -10697,10 +10701,11 @@ class Form
 						$out .= ' disabled';
 					}
 					if ((isset($selected[0]) && is_object($selected[0]) && $selected[0]->id == $obj->rowid)
-						|| ((!isset($selected[0]) || !is_object($selected[0])) && !empty($selected) && in_array($obj->rowid, $selected))) {
+						|| ((!isset($selected[0]) || !is_object($selected[0])) && !empty($selected) && in_array($obj->rowid, $selected))
+					) {
 						$out .= ' selected';
 					}
-					$out .= ' data-html="'.dol_escape_htmltag($labelhtml).'"';
+					$out .= ' data-html="' . dol_escape_htmltag($labelhtml) . '"';
 					$out .= '>';
 					$out .= $label;
 					$out .= '</option>';
@@ -10944,7 +10949,7 @@ class Form
 
 		$out = '';
 		$sql = "SELECT id, code, label";
-		$sql .= " FROM ".$this->db->prefix()."c_type_fees";
+		$sql .= " FROM " . $this->db->prefix() . "c_type_fees";
 		$sql .= " WHERE active = 1";
 
 		$resql = $this->db->query($sql);
@@ -10968,7 +10973,7 @@ class Form
 			}
 			$out .= '</select>';
 
-			$out .= ajax_combobox('select_'.$htmlname);
+			$out .= ajax_combobox('select_' . $htmlname);
 		} else {
 			dol_print_error($this->db);
 		}
@@ -11238,7 +11243,7 @@ class Form
 		// TODO: Use $arrayoffiltercriterias param instead of $arrayofcriterias to include linked object fields in search
 		global $langs, $form;
 
-		require_once DOL_DOCUMENT_ROOT."/core/class/html.formother.class.php";
+		require_once DOL_DOCUMENT_ROOT . "/core/class/html.formother.class.php";
 		$formother = new FormOther($this->db);
 
 		if ($search_component_params_hidden != '' && !preg_match('/^\(.*\)$/', $search_component_params_hidden)) {    // If $search_component_params_hidden does not start and end with ()
@@ -11269,14 +11274,14 @@ class Form
 				$errormessage = '';
 				$searchtags = forgeSQLFromUniversalSearchCriteria($tmpval, $errormessage, 1, 1);
 				if ($errormessage) {
-					$this->error = 'ERROR in parsing search string: '.$errormessage;
+					$this->error = 'ERROR in parsing search string: ' . $errormessage;
 				}
 				// Remove first and last parenthesis but only if first is the opening and last the closing of the same group
-				include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+				include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 				$searchtags = removeGlobalParenthesis($searchtags);
 
-				$ret .= '<span class="marginleftonlyshort valignmiddle tagsearch" data-ufilterid="'.($tmpkey + 1).'" data-ufilter="'.dol_escape_htmltag($tmpval).'">';
-				$ret .= '<span class="tagsearchdelete select2-selection__choice__remove" data-ufilterid="'.($tmpkey + 1).'">x</span> ';
+				$ret .= '<span class="marginleftonlyshort valignmiddle tagsearch" data-ufilterid="' . ($tmpkey + 1) . '" data-ufilter="' . dol_escape_htmltag($tmpval) . '">';
+				$ret .= '<span class="tagsearchdelete select2-selection__choice__remove" data-ufilterid="' . ($tmpkey + 1) . '">x</span> ';
 				$ret .= dol_escape_htmltag($searchtags);
 				$ret .= '</span>';
 			}
@@ -11708,10 +11713,10 @@ class Form
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
 	/**
-	* Load into cache list of invoice subtypes
-	*
-	* @return int             Nb of lines loaded, <0 if KO
-	*/
+	 * Load into cache list of invoice subtypes
+	 *
+	 * @return int             Nb of lines loaded, <0 if KO
+	 */
 	public function load_cache_invoice_subtype()
 	{
 		// phpcs:enable
@@ -11754,15 +11759,15 @@ class Form
 
 
 	/**
-	* Return list of invoice subtypes.
-	*
-	* @param int		$selected     	Id of invoice subtype to preselect by default
-	* @param string		$htmlname     	Select field name
-	* @param int<0,1>	$addempty     	Add an empty entry
-	* @param int<0,1>	$noinfoadmin  	0=Add admin info, 1=Disable admin info
-	* @param string $morecss       	Add more CSS on select tag
-	* @return string  				String for the HTML select component
-	*/
+	 * Return list of invoice subtypes.
+	 *
+	 * @param int		$selected     	Id of invoice subtype to preselect by default
+	 * @param string		$htmlname     	Select field name
+	 * @param int<0,1>	$addempty     	Add an empty entry
+	 * @param int<0,1>	$noinfoadmin  	0=Add admin info, 1=Disable admin info
+	 * @param string $morecss       	Add more CSS on select tag
+	 * @return string  				String for the HTML select component
+	 */
 	public function getSelectInvoiceSubtype($selected = 0, $htmlname = 'subtypeid', $addempty = 0, $noinfoadmin = 0, $morecss = '')
 	{
 		global $langs, $user;
@@ -11778,22 +11783,4 @@ class Form
 		}
 
 		foreach ($this->cache_invoice_subtype as $rowid => $subtype) {
-			$label = $subtype['label'];
-			$out .= '<option value="' . $subtype['rowid'] . '"';
-			if ($selected == $subtype['rowid']) {
-				$out .= ' selected="selected"';
-			}
-			$out .= '>';
-			$out .= $label;
-			$out .= '</option>';
-		}
-
-		$out .= '</select>';
-		if ($user->admin && empty($noinfoadmin)) {
-			$out .= info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-		}
-		$out .= ajax_combobox($htmlname);
-
-		return $out;
-	}
-}
+			$label = 
